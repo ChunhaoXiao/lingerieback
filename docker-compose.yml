@@ -7,7 +7,7 @@ services:
       - mysqldbb
     restart: on-failure
     volumes:
-      - C:\Users\kerby\Desktop\lingerie\files:/code/app/static
+      - /home/lingerie/file:/code/app/static
 
   mysqldbb:
     image: "mysql:8.0.31"
@@ -30,5 +30,5 @@ volumes:
     driver: local  # Define the driver and options under the volume name
     driver_opts:
         type: none
-        device: C:\Users\kerby\Desktop\lingerie\databack
+        device: /home/lingerie/databack
         o: bind
