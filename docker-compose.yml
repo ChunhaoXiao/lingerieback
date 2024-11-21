@@ -5,9 +5,9 @@ services:
       - 8017:8017
     depends_on:
       - mysqldbb
-    restart: on-failure
+    restart: always
     volumes:
-      - C:\Users\kerby\Desktop\lingerie\files:/code/app/static
+      - /home/lingerie/file:/code/app/static
 
   mysqldbb:
     image: "mysql:8.0.31"
@@ -15,7 +15,6 @@ services:
       - 3306
     ports:
       - "3306:3306"
-    #command: --init-file C:/Users/kerby/Desktop/lingerie/indocker/backend/data/init.sql
     environment:
       - MYSQL_DATABASE=lingerie
       - MYSQL_USER=kerby
@@ -30,5 +29,5 @@ volumes:
     driver: local  # Define the driver and options under the volume name
     driver_opts:
         type: none
-        device: C:\Users\kerby\Desktop\lingerie\databack
+        device: /home/lingerie/databack
         o: bind
