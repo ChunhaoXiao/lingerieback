@@ -15,7 +15,6 @@ services:
       - 3306
     ports:
       - "3306:3306"
-    #command: --init-file C:/Users/kerby/Desktop/lingerie/indocker/backend/data/init.sql
     environment:
       - MYSQL_DATABASE=lingerie
       - MYSQL_USER=kerby
