@@ -11,6 +11,7 @@ services:
 
   mysqldbb:
     image: "mysql:8.0.31"
+    restart: always
     expose:
       - 3306
     ports:
