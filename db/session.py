@@ -9,7 +9,7 @@ from db.models.category import Category
 # database = Setting.DB_NAME
 
 
-user = "kerby"
+user = "root"
 password = "123456"
 host= "mysqldbb"
 database= "lingerie"
