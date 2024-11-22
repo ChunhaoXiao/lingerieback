@@ -5,7 +5,6 @@ services:
       - 8017:8017
     depends_on:
       - db
-    #restart: always
     volumes:
       - /home/lingerie/file:/code/app/static
 
