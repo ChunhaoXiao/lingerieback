@@ -5,13 +5,12 @@ services:
       - 8017:8017
     depends_on:
       - db
-    restart: always
+    #restart: always
     volumes:
       - /home/lingerie/file:/code/app/static
 
   db:
     image: "mysql:8.0.31"
-    restart: always
     expose:
       - 3306
     ports:
