@@ -9,6 +9,7 @@ from db.repository.user import create_user
 import jwt
 from sqlalchemy import Select
 from db.models.user import User
+from core.config import Setting
 
 router = APIRouter(prefix="/api")
 

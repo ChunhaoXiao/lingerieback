@@ -14,5 +14,6 @@ class Setting:
     APP_ID:str = os.getenv("APPID")
     APP_SECRET:str = os.getenv("APPSECRET")
     STATIC_DIR:str = os.getenv("STATIC_DIR")
+    ADMIN_OPENID = os.getenv("ADMIN_OPENID")
     
 Setting = Setting()
