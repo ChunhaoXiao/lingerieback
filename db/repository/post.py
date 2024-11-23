@@ -22,10 +22,9 @@ def create_post(post: PostCreate, db: Session):
     db.refresh(post)
     return post
 
-def get_post(db:Session,params:PostRequest):
+def get_post(db:Session,params:PostRequest, is_vip:int):
     page = params.page
     category_id = params.category_id
-    is_vip = 1
     keyword = params.keyword
     type = params.type
     
