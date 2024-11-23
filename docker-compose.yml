@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    restart: on-failure
     ports:
       - 8017:8017
     depends_on:
