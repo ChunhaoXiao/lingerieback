@@ -35,6 +35,7 @@ class PostShow(BaseModel):
     collections:list["Likes"] | None=None
     statistic:Statistic | None =None
     created_at:datetime.datetime
+    is_admin:int | None=None
     
     @computed_field
     @property

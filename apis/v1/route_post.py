@@ -82,7 +82,11 @@ def post_detail(id:int,  background_tasks: BackgroundTasks, db:Session = Depends
     #     print(f"post after save statistic:{post}")
 
     #datas = post.__dict__
-    return {"code":1,"data":post}
+    #PostShow.model_validate(post)
+    response = PostShow(**post.__dict__)
+    response.is_admin = current_user.is_admin
+    
+    return {"code":1,"data":response}
     
     
 
