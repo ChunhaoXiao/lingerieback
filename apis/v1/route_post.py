@@ -36,7 +36,7 @@ def index_hot(db:Session = Depends(get_db), current_user:User=Depends(get_curren
 def index(params:Annotated[PostRequest, Query()], db:Session = Depends(get_db), current_user:User=Depends(get_current_user)):
     is_vip = 0
     print(f"current use is##################{current_user}")
-    if current_user.is_valid_vip() or current_user.is_admin==1:
+    if current_user.is_valid_vip or current_user.is_admin==1:
         is_vip = 1
 
     posts = get_post(db=db, params=params,is_vip=is_vip)
