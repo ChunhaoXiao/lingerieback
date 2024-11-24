@@ -22,15 +22,15 @@ services:
       - MYSQL_PASSWORD=123456
       
     volumes:
-      #- my-datavolume:/var/lib/mysql
-      - mysql_data:/var/lib/mysql
+      - my-datavolume:/var/lib/mysql
+      #- mysql_data:/var/lib/mysql
 
 
 volumes:
-  mysql_data: '/home/backups'
-  # my-datavolume:
-  #   driver: local  # Define the driver and options under the volume name
-  #   driver_opts:
-  #       type: none
-  #       device: /home/lingerie/databack
-  #       o: bind
+  #mysql_data: '/home/backups'
+  my-datavolume:
+    driver: local  # Define the driver and options under the volume name
+    driver_opts:
+        type: none
+        device: /home/backups
+        o: bind
