@@ -84,6 +84,7 @@ def post_detail(id:int,  background_tasks: BackgroundTasks, db:Session = Depends
     #datas = post.__dict__
     #PostShow.model_validate(post)
     response = PostShow(**post.__dict__)
+    print(f"response===================>{response}")
     response.is_admin = current_user.is_admin
     
     return {"code":1,"data":response}
