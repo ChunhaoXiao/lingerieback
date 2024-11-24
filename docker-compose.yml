@@ -32,5 +32,5 @@ volumes:
     driver: local  # Define the driver and options under the volume name
     driver_opts:
         type: none
-        device: /home/backups
+        device: /mnt/mydatabase
         o: bind
