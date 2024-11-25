@@ -21,7 +21,7 @@ router = APIRouter(prefix="/api/admin/post", dependencies=[Depends(get_admin_use
 @router.get("", response_model=GenericResponse[list[PostShow]])
 def index(params:Annotated[PostRequest, Query()], db:Session = Depends(get_db)):
     print(f"paramssss{params}")
-    posts = get_post(db=db, params=params)
+    posts = get_post(db=db, params=params,is_vip=1)
     return {"code":1, "data":posts}
 
 @router.post("/posts")
