@@ -15,16 +15,16 @@ from db.models.collection import Collection
 router = APIRouter(prefix="/api/my")
 
 @router.get("/likes", response_model=GenericResponse[list[LikeResponse]])
-def mylikes(user:User=Depends(get_current_user),db:Session = Depends(get_db)):
-    
-    
-    
-    stmt = select(Likes).options(selectinload(Likes.post)).join(Post,Post.id==Likes.post_id).where(Likes.user_id==user.id).order_by(Likes.id.desc())
+def mylikes(user:User=Depends(get_current_user),page:int=1, db:Session = Depends(get_db)):
+    pageSize = 20
+    offset = (page -1) * pageSize 
+    stmt = select(Likes).options(selectinload(Likes.post)).join(Post,Post.id==Likes.post_id).where(Likes.user_id==user.id).offset(offset).limit(pageSize).order_by(Likes.id.desc())
     res = db.scalars(stmt).all()
     return {"code":1,"data":res}
 
 @router.get("/collection", response_model=GenericResponse[list[LikeResponse]])
 def my_collection(page:int | None =1,user:User=Depends(get_current_user),db:Session = Depends(get_db)):
-    stmt = select(Collection).options(selectinload(Collection.post)).join(Post, Post.id==Collection.post_id).where(Collection.user_id == user.id).limit(15).offset((page-1) * 15).order_by(Collection.id.desc())
+    pageSize = 20
+    stmt = select(Collection).options(selectinload(Collection.post)).join(Post, Post.id==Collection.post_id).where(Collection.user_id == user.id).limit(pageSize).offset((page-1) * pageSize).order_by(Collection.id.desc())
     res = db.scalars(stmt).all()
     return {"code":1, "data":res}
