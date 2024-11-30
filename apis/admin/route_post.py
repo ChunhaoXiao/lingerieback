@@ -39,6 +39,7 @@ def post_detail(id:int, db:Session = Depends(get_db)):
 
 @router.delete("/{id}")
 def deletePost(id:int,db:Session=Depends(get_db)):
+    print(f"postid is:#####################{id}")
     removePost(id, db)
     return {"code":1, "data":"success"}
 

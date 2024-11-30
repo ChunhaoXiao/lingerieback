@@ -18,7 +18,7 @@ class Post(Base):
     collections:Mapped[list["Collection"]] = relationship(back_populates="post", cascade="all, delete-orphan") # type: ignore
     category_id:Mapped[int] = mapped_column(ForeignKey("categories.id"))
     category:Mapped["Category"] = relationship(back_populates="posts") # type: ignore
-    statistic:Mapped["PostStatistic"] = relationship(back_populates="post") # type: ignore
+    statistic:Mapped["PostStatistic"] = relationship(back_populates="post",cascade="all, delete-orphan") # type: ignore
     created_at:Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at:Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     

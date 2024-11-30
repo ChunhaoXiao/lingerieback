@@ -80,6 +80,7 @@ def update_post(id:int,post:PostCreate, db:Session):
     
 def removePost(id:int, db:Session):
     post = db.scalars(select(Post).where(Post.id==id)).one()
+    print(f"post to be delete is:{post}")
     db.delete(post)
     db.commit()
     

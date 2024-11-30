@@ -28,3 +28,12 @@ def my_collection(page:int | None =1,user:User=Depends(get_current_user),db:Sess
     stmt = select(Collection).options(selectinload(Collection.post)).join(Post, Post.id==Collection.post_id).where(Collection.user_id == user.id).limit(pageSize).offset((page-1) * pageSize).order_by(Collection.id.desc())
     res = db.scalars(stmt).all()
     return {"code":1, "data":res}
+
+@router.get("/mylk")
+
+def mythumb(db:Session = Depends(get_db)):
+    stmt = select(Post).join(Post.likes).where(Likes.user_id ==200, Post.is_vip==0)
+    res1 = db.scalars(stmt).all()
+    print(res1)
+    return res1
+
