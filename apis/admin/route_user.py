@@ -23,6 +23,7 @@ def get_users(param:Annotated[UserParam, Query()], db:Session=Depends(get_db)):
         query = query.where(User.name.like(f"%{param.name}%"))
     if param.vip == 1:
         query = query.where(User.vip.has(Vip.expire_date > datetime.now()))
+    query = query.where(User.is_admin==0)
     query = query.offset((param.page - 1) * 15).limit(15)
     users = db.scalars(query.order_by(User.id.desc())).all()
     total_cnt = db.scalars(select(func.count(User.id)).select_from(User)).first()
@@ -62,7 +63,14 @@ def update_user(id:int,data:UserRequest, db:Session=Depends(get_db)):
             vip.expire_date = expire_date
             db.commit()
             return {"code":1,"data":"success"}
-            
+    if vip_period == 0:
+        #取消vip
+        if user.vip:
+            if user.vip.expire_date > datetime.now():
+                 vip = user.vip
+                 vip.expire_date = datetime.now()
+                 db.commit()
+        return {"code":1,"data":"success"}
             
             
         
