@@ -1,7 +1,8 @@
 
 
 from fastapi import File, UploadFile, Request, APIRouter,Depends
-from sqlalchemy.orm import selectinload, Session
+from sqlalchemy.orm import joinedload, joinedload, selectinload, Session
+from db.models.post_views import PostView
 from db.session import get_db
 from sqlalchemy import select
 from apis.v1.route_login import get_current_user
@@ -11,6 +12,7 @@ from db.models.post import Post
 from schemas.base_response import GenericResponse
 from schemas.likes import LikeResponse
 from db.models.collection import Collection
+from sqlalchemy.orm import aliased
  
 router = APIRouter(prefix="/api/my")
 
@@ -29,11 +31,25 @@ def my_collection(page:int | None =1,user:User=Depends(get_current_user),db:Sess
     res = db.scalars(stmt).all()
     return {"code":1, "data":res}
 
-@router.get("/mylk")
+@router.get("/history", response_model=GenericResponse[list[LikeResponse]])
+def my_histoty(page:int | None =1, user:User=Depends(get_current_user),db:Session = Depends(get_db)):
+    offset = (page-1) * 20
+    stmt = select(PostView).options(selectinload(PostView.post)).where(PostView.user_id==user.id,PostView.post.has(Post.is_vip==0)).offset(offset).limit(20).order_by(PostView.updated_at.desc())
+    res = db.scalars(stmt).all()
+    for item in res:
+        print(item.id)
+        print("==============================")
+        print(item.post)
+    
+    return {"code":1,"data":res}
+    
+    
 
-def mythumb(db:Session = Depends(get_db)):
-    stmt = select(Post).join(Post.likes).where(Likes.user_id ==200, Post.is_vip==0)
-    res1 = db.scalars(stmt).all()
-    print(res1)
-    return res1
+# @router.get("/mylk")
+
+# def mythumb(db:Session = Depends(get_db)):
+#     stmt = select(Post).join(Post.likes).where(Likes.user_id ==200, Post.is_vip==0)
+#     res1 = db.scalars(stmt).all()
+#     print(res1)
+#     return res1
 

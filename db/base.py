@@ -14,3 +14,4 @@ from db.models.card import Card
 from db.models.card_group import CardGroup
 
 from db.models.charge_lock import ChargeLock
+from db.models.feedback import FeedBack

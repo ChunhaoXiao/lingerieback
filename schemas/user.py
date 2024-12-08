@@ -5,6 +5,7 @@ import datetime
 import arrow
 class User(BaseModel):
     name:str
+    open_id:str |None=None
     #age:int = 
     
 class Vip(BaseModel):

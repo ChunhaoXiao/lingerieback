@@ -15,6 +15,7 @@ class Post(Base):
     description:Mapped[str]= mapped_column(String(1000), default="")
     files:Mapped[list["Media"]] = relationship(back_populates="post", cascade="all, delete-orphan") # type: ignore
     likes:Mapped[list["Likes"]] = relationship(back_populates="post", cascade="all, delete-orphan") # type: ignore
+    views:Mapped[list["PostView"]] = relationship(back_populates="post") # type: ignore
     collections:Mapped[list["Collection"]] = relationship(back_populates="post", cascade="all, delete-orphan") # type: ignore
     category_id:Mapped[int] = mapped_column(ForeignKey("categories.id"))
     category:Mapped["Category"] = relationship(back_populates="posts") # type: ignore

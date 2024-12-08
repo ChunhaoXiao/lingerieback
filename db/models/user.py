@@ -18,8 +18,11 @@ class User(Base):
     
     @hybrid_property
     def is_valid_vip(self):
-        return self.vip and self.vip.expire_date > datetime.datetime.now()
-
+        if self.is_admin == 1:
+            return True
+        if self.vip and self.vip.expire_date > datetime.datetime.now():
+            return True
+        return False
    # created:Mapped[str] = deferred("aaa")
     
     
