@@ -8,6 +8,8 @@ class Media(Base):
     __tablename__="media"
     id:Mapped[int] = mapped_column(primary_key=True)
     url:Mapped[str] = mapped_column(String(200))
+    is_video:Mapped[int] = mapped_column(default=0)
+    
     post_id:Mapped[int] = mapped_column(ForeignKey("posts.id"))
     post:Mapped["Post"] = relationship(back_populates="files") # type: ignore
     created_at:Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

@@ -8,4 +8,4 @@ class UploadResponse(BaseModel):
     @computed_field
     @property
     def full_path(self)->str:
-        return Setting.STATIC_URL+self.file_name
+        return Setting.STATIC_URL+'/'+Setting.UPLOAD_DIR+'/'+self.file_name

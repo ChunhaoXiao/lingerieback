@@ -7,11 +7,32 @@ from db.models.media import Media
 from db.models.likes import Likes
 from db.models.collection import Collection
 from schemas.post_request import PostRequest
+import cv2
+from core.config import Setting
+import os
+
+
 
 def create_post(post: PostCreate, db: Session):
     files = []
     for item in post.files:
-        files.append(Media(url=item))
+        is_video = 0
+        if ".mp4" in item:
+            get_video_image(item)
+            print("is mp4")
+            is_video=1
+            # cam = cv2.VideoCapture(f"{Setting.STATIC_DIR}/{item}")
+            # cam.set(cv2.CAP_PROP_POS_MSEC,2000)
+            # ret,frame = cam.read()
+            # name = Setting.STATIC_DIR+"/test111.jpg"
+            # print(f"frame is:{frame}")
+            # cv2.imwrite(name,frame)
+            # is_video=1
+            
+            #cam.release()
+            #cv2.destroyAllWindows()
+            
+        files.append(Media(url=item,is_video=is_video))
     
     post = Post(**post.model_dump(exclude={'files'}))
     post.files = files
@@ -83,4 +104,12 @@ def removePost(id:int, db:Session):
     print(f"post to be delete is:{post}")
     db.delete(post)
     db.commit()
+    
+def get_video_image(url):
+    file_name = os.path.basename(url)
+    cam = cv2.VideoCapture(f"{Setting.STATIC_DIR}/{Setting.UPLOAD_DIR}/{url}")
+    cam.set(cv2.CAP_PROP_POS_MSEC,2000)
+    ret,frame = cam.read()
+    name =f"{Setting.STATIC_DIR}/{Setting.UPLOAD_DIR}/{file_name}.jpg"
+    cv2.imwrite(name,frame)
     

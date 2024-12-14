@@ -18,8 +18,10 @@ def upload(request:Request,file:UploadFile = File(...)):
     file_name = f"{file_name}{ext}"
     
     try:
-        with open(Setting.STATIC_DIR+'/'+file_name, 'wb') as f:
-            f.write(file.file.read(1024*1024))
+        with open(Setting.STATIC_DIR+'/'+Setting.UPLOAD_DIR+'/'+file_name, 'wb') as f:
+            #f.write(file.file.read(1024*1024))
+            while contents := file.file.read(1024 * 1024):
+                    f.write(contents)
             return {
                 "code":1, "data":{"file_name":file_name}
             }

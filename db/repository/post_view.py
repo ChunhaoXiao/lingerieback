@@ -8,6 +8,7 @@ import datetime
 from db.repository.statistic import update_view_cnt
 
 def save_view_log(post, user,db):
+    print("execute post view save log.......")
     view = db.scalars(select(PostView).where(PostView.post_id == post.id,PostView.user_id==user.id)).first()
     print(f"view is:=====>{view}")
     if view:
