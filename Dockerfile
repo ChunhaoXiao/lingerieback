@@ -4,6 +4,8 @@ FROM python:3.12
 
 WORKDIR /code
 
+RUN apt-get update
+RUN apt install -y libgl1-mesa-glx
 
 COPY ./requirements.txt /code/requirements.txt
 
