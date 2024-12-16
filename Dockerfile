@@ -11,6 +11,7 @@ COPY ./requirements.txt /code/requirements.txt
 
 COPY ./data/init.sql /code/init.sql
 
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
