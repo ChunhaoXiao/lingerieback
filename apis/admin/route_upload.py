@@ -9,6 +9,7 @@ from db.models.user import User as Dbuser
 from core.config import Setting
 from apis.v1.route_login import get_admin_user
 
+
 router = APIRouter(prefix="/api/admin/upload", dependencies=[Depends(get_admin_user)])
 
 @router.post("",response_model=GenericResponse[UploadResponse])
@@ -18,6 +19,9 @@ def upload(request:Request,file:UploadFile = File(...)):
     file_name = f"{file_name}{ext}"
     
     try:
+        PATH = Setting.STATIC_DIR+'/'+Setting.UPLOAD_DIR
+        if not os.path.exists(PATH):
+          os.makedirs(PATH)
         with open(Setting.STATIC_DIR+'/'+Setting.UPLOAD_DIR+'/'+file_name, 'wb') as f:
             #f.write(file.file.read(1024*1024))
             while contents := file.file.read(1024 * 1024):
