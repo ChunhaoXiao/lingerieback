@@ -16,7 +16,7 @@ def index(db:Session=Depends(get_db)):
     print(f"categories with post count:{get_category_list(db)}")
     return {"code":1, "data":get_category_list(db)}
 
-@router.get("/{id}", response_model=GenericResponse[CategoryResponse])
+@router.get("/{id}", response_model=GenericResponse[Category])
 def find(id:int, db:Session=Depends(get_db)):
     stmt = select(DbCategory).where(DbCategory.id == id)
     res = db.scalars(stmt).first()
