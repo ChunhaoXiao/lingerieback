@@ -11,7 +11,7 @@ class Category(BaseModel):
     @computed_field
     @property
     def pic_path(self)->str:
-        return Setting.STATIC_URL+self.icon
+        return f"{Setting.STATIC_URL}{Setting.UPLOAD_DIR}/{self.icon}"
 
 class CategoryCreate(BaseModel):
     name:str

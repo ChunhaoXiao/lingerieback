@@ -46,7 +46,7 @@ class NoticeResponse(BaseModel):
         if self.pictures:
             pics = self.pictures.split(",")
             for item in pics:
-                pic_list.append(f"{Setting.STATIC_URL}{item}")
+                pic_list.append(f"{Setting.STATIC_URL}{Setting.UPLOAD_DIR}/{item}")
         return pic_list
             
             
