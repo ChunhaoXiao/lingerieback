@@ -9,7 +9,7 @@ services:
       - db
       - redis
     volumes:
-      /home/staticbackup:/code/app/static
+      - /home/staticbackup:/code/app/static
       #- C:\Users\kerby\Desktop\lingerie\files:/code/app/static
 
   db:
