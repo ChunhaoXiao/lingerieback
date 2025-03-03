@@ -9,8 +9,8 @@ services:
       - db
       - redis
     volumes:
-      #- /home/staticbackup:/code/app/static
-      - C:\Users\kerby\Desktop\lingerie\files:/code/app/static
+      /home/staticbackup:/code/app/static
+      #- C:\Users\kerby\Desktop\lingerie\files:/code/app/static
 
   db:
     image: "mysql:8.0.31"
@@ -43,5 +43,5 @@ volumes:
     driver: local  # Define the driver and options under the volume name
     driver_opts:
         type: none
-        device: C:\Users\kerby\Desktop\lingerie\databack #/mnt/mydatabase
+        device: /mnt/mydatabase #C:\Users\kerby\Desktop\lingerie\databack #/mnt/mydatabase
         o: bind
