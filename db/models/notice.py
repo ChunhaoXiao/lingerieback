@@ -9,7 +9,9 @@ class Notice(Base):
     title:Mapped[str] = mapped_column(String(200))
     content:Mapped[str] = mapped_column(String(3000))
     enabled:Mapped[int] = mapped_column(default=1)
+    start_time:Mapped[str] = mapped_column(String(100), default="")
+    end_time:Mapped[str] = mapped_column(String(100),default="")
     pictures:Mapped[str] = mapped_column(String(500), default="")
-    positions:Mapped[list["NoticePosition"]] = relationship(back_populates="notice") # type: ignore
+    positions:Mapped[list["NoticePosition"]] = relationship(back_populates="notice",cascade="all, delete-orphan") # type: ignore
     created_at:Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at:Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

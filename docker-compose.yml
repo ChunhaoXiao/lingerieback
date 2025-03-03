@@ -6,8 +6,10 @@ services:
       - 8017:8017
     depends_on:
       - db
+      - redis
     volumes:
-      - /home/staticbackup:/code/app/static
+      #- /home/staticbackup:/code/app/static
+      - C:\Users\kerby\Desktop\lingerie\files:/code/app/static
 
   db:
     image: "mysql:8.0.31"
@@ -24,7 +26,15 @@ services:
     volumes:
       - my-datavolume:/var/lib/mysql
       #- mysql_data:/var/lib/mysql
-
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=0
 
 volumes:
   #mysql_data: '/home/backups'
@@ -32,5 +42,5 @@ volumes:
     driver: local  # Define the driver and options under the volume name
     driver_opts:
         type: none
-        device: /mnt/mydatabase
+        device: C:\Users\kerby\Desktop\lingerie\databack #/mnt/mydatabase
         o: bind

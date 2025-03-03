@@ -1,4 +1,4 @@
-from pydantic import BaseModel, computed_field, field_serializer, model_serializer
+from pydantic import Field, BaseModel, computed_field, field_serializer, model_serializer
 from core.config import Setting
 from schemas.category import Category
 import datetime 
@@ -7,13 +7,14 @@ import arrow
 import os
 
 class PostCreate(BaseModel):
-    title:str
+    title:str = Field(min_length=5)
     category_id:int
     is_vip:int | None=1
     is_recommand:int | None=0
     is_hot:int | None=0
+    is_hide:int |None=0
     description:str | None=None
-    files:list[str]
+    files:list[str] = Field(min_length=1)
     
 class MediaPost(BaseModel):
     url:str
@@ -30,6 +31,7 @@ class PostShow(BaseModel):
     description:str
     is_recommand:int | None=0
     is_hot:int |None=0
+    is_hide:int |None=0
     files:list["MediaShow"]
     category:Category | None=None
     likes:list["Likes"] | None=None
@@ -47,6 +49,8 @@ class PostShow(BaseModel):
     @computed_field
     @property
     def list_cover(self) -> str:
+        if len(self.files) == 0:
+            return ""
         if  len(self.files)==1 and ".mp4" in self.files[0].url:
             image_file = os.path.basename(self.files[0].url)
             file_name = image_file+'.jpg'
@@ -55,9 +59,11 @@ class PostShow(BaseModel):
             return self.files[0].url
         return f"{Setting.STATIC_URL}/{Setting.UPLOAD_DIR}/{self.files[0].url}"
     
+    
     @computed_field
     @property
     def is_video(self)->bool:
+        
         return len(self.files)==1 and ".mp4" in self.files[0].url
         
     

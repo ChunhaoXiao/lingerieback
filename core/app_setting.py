@@ -1,0 +1,32 @@
+settings = {
+    "app_status":{
+        "value":"1",
+        "description":"是否开启访问",
+        "type":"switch"
+    },
+    "index_hot_num":{
+        "value":"5",
+        "description":"首页推荐显示数量",
+        "type":"input"
+    },
+    "index_recommand_num":{
+        "value":"10",
+        "description":"首页热门数量",
+        "type":"input"
+    },
+    "feed_back_status": {
+        "value":"1",
+        "description":"开启意见反馈",
+        "type":"switch"
+    },
+    "category-list-count":{
+        "value":"20",
+        "description":"列表页每页数量",
+        "type":"input"
+    },
+    "feedback_max_files":{
+        "value":"9",
+        "description":"意见反馈最大上传数量",
+        "type":"input"
+    }
+}

@@ -22,7 +22,7 @@ def save(data:NoticeCreate,db:Session=Depends(get_db)):
         positions = []
         for pos in data.position:
             positions.append(NoticePosition(postion_name=pos))      
-    notice = Notice(title=data.title,content=data.content, pictures=pictures,enabled=data.enabled,positions=positions)
+    notice = Notice(title=data.title,content=data.content, pictures=pictures,enabled=data.enabled,positions=positions,start_time=data.startTime,end_time=data.endTime)
     db.add(notice)
     db.commit()
     return {"code":1, "data":"success"}
@@ -55,6 +55,8 @@ def update(id:int,data:NoticeCreate,db:Session=Depends(get_db)):
             positions.append(NoticePosition(postion_name=pos))      
     notice.title = data.title
     notice.content = data.content
+    notice.start_time = data.startTime
+    notice.end_time = data.endTime
     notice.pictures = ",".join(data.pictures)
     notice.enabled = data.enabled
     notice.positions=positions

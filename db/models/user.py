@@ -20,9 +20,13 @@ class User(Base):
     def is_valid_vip(self):
         if self.is_admin == 1:
             return True
-        if self.vip and self.vip.expire_date > datetime.datetime.now():
+        if self.vip and (self.vip.expire_date > datetime.datetime.now() or not self.vip.expire_date):
             return True
         return False
    # created:Mapped[str] = deferred("aaa")
-    
+
+    @hybrid_property
+    def is_permanent_vip(self):
+        return self.vip and not self.vip.expire_date
+
     

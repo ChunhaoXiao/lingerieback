@@ -8,6 +8,8 @@ from sqlalchemy.orm import Session
 from db.session import get_db
 from sqlalchemy import func, select, select, update
 
+from core.config import Setting
+
 router = APIRouter(prefix="/api/user")
 
 @router.get("/me", response_model=GenericResponse[UserResponse])

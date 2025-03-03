@@ -1,5 +1,6 @@
 from fastapi import Depends, APIRouter
 from sqlalchemy.orm import Session
+from db.models.vip import Vip
 from db.session import get_db
 from sqlalchemy import func, func, select,Date,cast
 from db.models.post_statistic import PostStatistic
@@ -25,10 +26,13 @@ def index(db:Session=Depends(get_db)):
     #用户数量
     stmt = select(func.count(User.id)).select_from(User).where(cast(User.created_at,Date)==yesterday)
     user_cnt = db.scalars(stmt).first()
+    #新增VIP用户数量
+    new_vip_user_cnt = db.scalars(select(func.count(Vip.id)).select_from().where(cast(Vip.created_at,Date)==yesterday)).first()
     
     result["read_cnt"] = read_cnt
     result["like_cnt"] = like_cnt
     result["user_cnt"] = user_cnt
+    result["new_vip_cnt"] = new_vip_user_cnt
     
     return {"code":1,"data":result}
     

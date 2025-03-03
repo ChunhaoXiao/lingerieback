@@ -15,3 +15,5 @@ from db.models.card_group import CardGroup
 
 from db.models.charge_lock import ChargeLock
 from db.models.feedback import FeedBack
+from db.models.app_setting import AppSetting
+from db.models.temp_uploaded_files import TempUploadedFile

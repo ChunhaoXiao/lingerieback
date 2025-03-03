@@ -12,6 +12,7 @@ class Post(Base):
     is_vip:Mapped[int] = mapped_column(default=1)
     is_recommand:Mapped[int] = mapped_column(default=0)
     is_hot:Mapped[int] = mapped_column(default=0)
+    is_hide:Mapped[int] = mapped_column(default=0)
     description:Mapped[str]= mapped_column(String(1000), default="")
     files:Mapped[list["Media"]] = relationship(back_populates="post", cascade="all, delete-orphan") # type: ignore
     likes:Mapped[list["Likes"]] = relationship(back_populates="post", cascade="all, delete-orphan") # type: ignore

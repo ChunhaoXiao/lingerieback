@@ -19,3 +19,6 @@ class Category(Base):
         .correlate_except(Post)
         .scalar_subquery()
     )
+    
+    def __repr__(self):
+        return self.name

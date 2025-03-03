@@ -23,7 +23,7 @@ class FeebBackResponse(BaseModel):
             return []
         file_list = []
         for item in self.files.split(","):
-            file_list.append(Setting.STATIC_URL+item)
+            file_list.append(f"{Setting.STATIC_URL}{Setting.UPLOAD_DIR}/{item}")
         return file_list
     
     @computed_field

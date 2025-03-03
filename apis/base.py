@@ -8,6 +8,7 @@ from apis.admin import route_card as admin_card
 from apis.admin import route_statistic
 from apis.admin import route_upload as admin_upload
 from apis.admin import route_feedback as admin_feedback
+from apis.admin import route_setting as admin_setting
 
 api_router = APIRouter()
 
@@ -33,3 +34,4 @@ api_router.include_router(admin_user.router)
 api_router.include_router(admin_card.router)
 api_router.include_router(route_statistic.router)
 api_router.include_router(admin_feedback.router)
+api_router.include_router(admin_setting.router)

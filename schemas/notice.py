@@ -8,6 +8,8 @@ class NoticeCreate(BaseModel):
     position:list[str]
     enabled:str | None=1
     pictures:list[str] | None= None
+    startTime:str |None=None
+    endTime:str |None = None
 
 class NoticePosition(BaseModel):
     id:int
@@ -23,6 +25,8 @@ class NoticeResponse(BaseModel):
     content:str
     positions:list[NoticePosition] | None=None
     enabled:int | None=1
+    start_time:str | None=None
+    end_time:str |None=None
     pictures:str | None= None
     created_at:datetime
     

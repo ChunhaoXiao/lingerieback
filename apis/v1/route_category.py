@@ -1,10 +1,10 @@
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, HTTPException
 from db.session import get_db
 from schemas.category import Category,CategoryCreate,CategoryResponse
 from sqlalchemy.orm import Session;
 from db.models.category import Category as DbCategory
 from schemas.base_response import GenericResponse
-from db.repository.category import get_category_list,get_valid_categories
+from db.repository.category import get_category_list,find_category
 router = APIRouter(prefix="/api/category")
 
 @router.post("/save", response_model=GenericResponse[str])
@@ -24,6 +24,15 @@ def index(db:Session=Depends(get_db)):
 @router.get("/validcategories", response_model=GenericResponse[list[CategoryResponse]])
 def index(db:Session=Depends(get_db)):
     return {"code":1, "data": get_category_list(db)}
+
+@router.get("/{id}")
+def show(id:int,db:Session=Depends(get_db)):
+    category = find_category(id, db)
+    if not category:
+        #raise HTTPException(status_code=404)
+        return {"code":0, "data":"分类不存在"}
+    return {"code":1, "data":find_category(id, db)}
+    
 
 @router.get("/ttt", response_model=GenericResponse[list[CategoryResponse]])
 def get_cate(db:Session=Depends(get_db)):

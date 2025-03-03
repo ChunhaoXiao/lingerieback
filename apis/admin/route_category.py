@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/admin/category", dependencies=[Depends(get_admin
 @router.get("/", response_model=GenericResponse[list[CategoryResponse]])
 def index(db:Session=Depends(get_db)):
     print(f"categories with post count:{get_category_list(db)}")
-    return {"code":1, "data":get_category_list(db)}
+    return {"code":1, "data":get_category_list(db,is_all=1)}
 
 @router.get("/{id}", response_model=GenericResponse[Category])
 def find(id:int, db:Session=Depends(get_db)):

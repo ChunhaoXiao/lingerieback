@@ -17,17 +17,22 @@ from db.models.likes import Likes
 from db.models.collection import Collection
 from apis.v1.route_login import get_current_user
 from sqlalchemy import func
+from core.config import Setting
 
 from schemas.post_request import PostRequest
 
 router = APIRouter(prefix="/api/posts")
+from db.redis import get_config
 
 @router.get("/hot",  response_model=GenericResponse[list[PostShow]])
 def index_hot(db:Session = Depends(get_db), current_user:User=Depends(get_current_user)):
+    lmt = get_config('index_recommand_num')
+    print(f"lmt....{lmt}")
     query = select(Post,func.count(Post.likes).label("like_cnt")).join(Post.likes,isouter=True).options(selectinload(Post.files))
     if not current_user.is_valid_vip:
         query = query.where(Post.is_vip==0)
-    query = query.group_by(Post.id).order_by(Post.is_hot.desc(),desc("like_cnt")).limit(10)
+    query = query.where(Post.is_hide == 0)
+    query = query.group_by(Post.id).order_by(Post.is_hot.desc(),desc("like_cnt")).limit(get_config('index_recommand_num'))
     res = db.scalars(query).all()
     print(f"res======>{res}")
     return {"code":1, "data":res}
@@ -39,7 +44,7 @@ def index(params:Annotated[PostRequest, Query()], db:Session = Depends(get_db), 
     if current_user.is_valid_vip or current_user.is_admin==1:
         is_vip = 1
 
-    posts = get_post(db=db, params=params,is_vip=is_vip)
+    posts = get_post(db=db, params=params,is_vip=is_vip,include_hide=0)
     return {"code":1, "data":posts}
 
 
@@ -47,6 +52,9 @@ def index(params:Annotated[PostRequest, Query()], db:Session = Depends(get_db), 
 def post_detail(id:int,  background_tasks: BackgroundTasks, db:Session = Depends(get_db), current_user:User=Depends(get_current_user)):
     stmt = select(Post).options(selectinload(Post.likes.and_(Likes.user_id==current_user.id))).options(selectinload(Post.category)).options(selectinload(Post.files)).options(selectinload(Post.statistic)).options(selectinload(Post.collections.and_(Collection.user_id==current_user.id))).where(Post.id == id)
     post = db.scalars(stmt).first()
+    if post.is_hide == 1 and current_user.is_admin == 0:
+        raise HTTPException(status_code=404)
+        
     if post.is_vip:
         if not current_user.vip and current_user.is_admin == 0:
             raise HTTPException(status_code=404)

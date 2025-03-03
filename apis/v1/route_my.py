@@ -20,22 +20,27 @@ router = APIRouter(prefix="/api/my")
 def mylikes(user:User=Depends(get_current_user),page:int=1, db:Session = Depends(get_db)):
     pageSize = 20
     offset = (page -1) * pageSize 
-    stmt = select(Likes).options(selectinload(Likes.post)).join(Post,Post.id==Likes.post_id).where(Likes.user_id==user.id).offset(offset).limit(pageSize).order_by(Likes.id.desc())
+    stmt = select(Likes).options(selectinload(Likes.post)).join(Post,Post.id==Likes.post_id).where(Likes.user_id==user.id,Post.is_hide==0).offset(offset).limit(pageSize).order_by(Likes.id.desc())
     res = db.scalars(stmt).all()
     return {"code":1,"data":res}
 
 @router.get("/collection", response_model=GenericResponse[list[LikeResponse]])
 def my_collection(page:int | None =1,user:User=Depends(get_current_user),db:Session = Depends(get_db)):
     pageSize = 20
-    stmt = select(Collection).options(selectinload(Collection.post)).join(Post, Post.id==Collection.post_id).where(Collection.user_id == user.id).limit(pageSize).offset((page-1) * pageSize).order_by(Collection.id.desc())
+    stmt = select(Collection).options(selectinload(Collection.post)).join(Post, Post.id==Collection.post_id).where(Collection.user_id == user.id,Post.is_hide==0).limit(pageSize).offset((page-1) * pageSize).order_by(Collection.id.desc())
     res = db.scalars(stmt).all()
     return {"code":1, "data":res}
 
 @router.get("/history", response_model=GenericResponse[list[LikeResponse]])
 def my_histoty(page:int | None =1, user:User=Depends(get_current_user),db:Session = Depends(get_db)):
     offset = (page-1) * 20
-    stmt = select(PostView).options(selectinload(PostView.post)).where(PostView.user_id==user.id,PostView.post.has(Post.is_vip==0)).offset(offset).limit(20).order_by(PostView.updated_at.desc())
-    res = db.scalars(stmt).all()
+    
+    query = select(PostView).options(selectinload(PostView.post)).where(PostView.user_id==user.id)
+    if not user.is_valid_vip and user.is_admin==0:
+        query = query.where(PostView.post.has(Post.is_vip==0))
+    query = query.where(PostView.post.has(Post.is_hide == 0)).offset(offset).limit(20).order_by(PostView.updated_at.desc())
+    #stmt = select(PostView).options(selectinload(PostView.post)).where(PostView.user_id==user.id,PostView.post.has(Post.is_vip==0),PostView.post.has(Post.is_hide==0)).offset(offset).limit(20).order_by(PostView.updated_at.desc())
+    res = db.scalars(query).all()
     for item in res:
         print(item.id)
         print("==============================")

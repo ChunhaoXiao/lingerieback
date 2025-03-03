@@ -33,10 +33,14 @@ async def charge(request: Request,name: Annotated[str, Form()], cardnumber: Anno
     if not name:
         return {"data":"用户名不能为空"}
     if not cardnumber:
-        return {"data":"卡号不能为空"}
+        return {"data":"卡号不能为空"}              
     user = db.scalars(select(User).where(User.name == name)).first()
     if not user:
         return {"data":"用户不存在"}
+    if user.is_permanent_vip:
+        return {
+            "data":"已经是永久vip用户，无需充值"
+        }
     card = db.scalars(select(Card).where(Card.number==cardnumber,Card.user_id.is_(null()))).first()
     if not card:
         save_lock(request.client.host,db)
@@ -47,7 +51,10 @@ async def charge(request: Request,name: Annotated[str, Form()], cardnumber: Anno
     card.used_at=datetime.datetime.now()
     
     if not user.vip:
-        expire_time = datetime.datetime.now() + relativedelta(months=card.period)  
+        if card.period < 999:
+          expire_time = datetime.datetime.now() + relativedelta(months=card.period)
+        else:
+          expire_time = None
         vip = Vip(expire_date=expire_time,user=user,open_id=user.open_id)
         db.add(vip)
         db.commit()

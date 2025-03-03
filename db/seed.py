@@ -16,7 +16,7 @@ from urllib.parse import urlencode
 import requests
 from random import randint
 import time
-
+#from db.session import session
 
 
 def seed_data():
@@ -113,3 +113,6 @@ def get_unsplash_images(page):
     
     return pic_arr
     #print(f"unsplash response:{res}")
+    
+
+        

@@ -13,6 +13,13 @@ class Vip(BaseModel):
     user_id:int
     expire_date:datetime.datetime
     
+    @computed_field
+    @property
+    def vip_expire_date(self)->str:
+        if not self.expire_date:
+            return ""
+        return self.expire_date.strftime('%Y-%m-%d')
+    
     
 class UserResponse(BaseModel):
     id:int
@@ -21,6 +28,8 @@ class UserResponse(BaseModel):
     created_at:datetime.datetime
     is_admin:int
     vip:Vip | None = None
+    # last_visit_time:str |None=None
+    # view_cnt:int |None=0
     #open_id:str | None = None
     
     #vip:Vip | None =None
@@ -35,6 +44,12 @@ class UserListResponse(BaseModel):
     users:list[UserResponse]
     total_cnt:int | None = 0
     vip_cnt:int | None = 0
+
+class UserDetailResponse(BaseModel):
+    user:UserResponse
+    last_visit_time:datetime.datetime |None = None
+    total_view:int |None=None
+    like_cnt:int | None=None
     
 class UserRequest(BaseModel):
     name:str | None= None
