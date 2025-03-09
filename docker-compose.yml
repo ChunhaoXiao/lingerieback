@@ -1,4 +1,5 @@
 services:
+  
   app:
     build: .
     restart: on-failure
@@ -8,20 +9,21 @@ services:
       - db
       - redis
     volumes:
-      - /home/staticbackup:/code/app/static
+      - ${STATIC_PATH_MAP} #/home/staticbackup:/code/app/static
       #- C:\Users\kerby\Desktop\lingerie\files:/code/app/static
 
   db:
+    #env_file: path_to_env.env.
     image: "mysql:8.0.31"
     expose:
       - 3306
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_DATABASE=lingerie
-      - MYSQL_USER=kerby
-      - MYSQL_PASSWORD=123456
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
       
     volumes:
       - my-datavolume:/var/lib/mysql
@@ -42,5 +44,5 @@ volumes:
     driver: local  # Define the driver and options under the volume name
     driver_opts:
         type: none
-        device: /mnt/mydatabase #C:\Users\kerby\Desktop\lingerie\databack #
+        device: ${MYSQL_MOUNT_PATH} #/mnt/mydatabase #C:\Users\kerby\Desktop\lingerie\databack #
         o: bind

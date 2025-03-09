@@ -1,6 +1,13 @@
 from dotenv import load_dotenv
 import os
-load_dotenv(override=True)
+from os.path import join, dirname
+from pathlib import Path
+
+
+dotenv_path = join(dirname(dirname(__file__)), '.dev.env')
+print(f"dotenvpath is:{dotenv_path}")
+
+load_dotenv(dotenv_path,override=True)
 
 class Settings:
     
