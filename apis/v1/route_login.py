@@ -21,6 +21,8 @@ def login(data:dict, db:Session=Depends(get_db)):
     res = requests.get(url=url, params=params)
     print(f"login wechat res:{res}")
     datas = res.json()
+    print(f"=============================================================================================>{datas}")
+    
     if datas['openid']:
       create_user({"openid":datas['openid']}, db)
       access_token = create_access_token(data={"sub": datas["openid"]})
