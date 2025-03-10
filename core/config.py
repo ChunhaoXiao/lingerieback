@@ -4,7 +4,7 @@ from os.path import join, dirname
 from pathlib import Path
 
 
-dotenv_path = join(dirname(dirname(__file__)), '.dev.env')
+dotenv_path = join(dirname(dirname(__file__)), '.uat.env')
 print(f"dotenvpath is:{dotenv_path}")
 
 load_dotenv(dotenv_path,override=True)
