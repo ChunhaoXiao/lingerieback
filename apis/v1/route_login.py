@@ -19,6 +19,7 @@ def login(data:dict, db:Session=Depends(get_db)):
     url = "https://api.weixin.qq.com/sns/jscode2session"
     params = {"appid":Setting.APP_ID,"secret":Setting.APP_SECRET,"js_code":code, "grant_type":"authorization_code"}
     res = requests.get(url=url, params=params)
+    print(f"login wechat res:{res}")
     datas = res.json()
     if datas['openid']:
       create_user({"openid":datas['openid']}, db)
