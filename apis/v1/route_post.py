@@ -32,7 +32,12 @@ def index_hot(db:Session = Depends(get_db), current_user:User=Depends(get_curren
     if not current_user.is_valid_vip:
         query = query.where(Post.is_vip==0)
     query = query.where(Post.is_hide == 0)
-    query = query.group_by(Post.id).order_by(Post.is_hot.desc(),desc("like_cnt")).limit(get_config('index_recommand_num'))
+    #query = query.group_by(Post.id).order_by(Post.is_hot.desc(),desc("like_cnt")).limit(get_config('index_recommand_num'))
+    orderby = get_config("index_recommand_order")
+    if orderby == "like_cnt":
+        query = query.group_by(Post.id).order_by(Post.is_hot.desc(),desc("like_cnt")).limit(get_config('index_recommand_num'))
+    else:
+      query = query.group_by(Post.id).order_by(func.random()).limit(get_config('index_recommand_num'))
     res = db.scalars(query).all()
     print(f"res======>{res}")
     return {"code":1, "data":res}

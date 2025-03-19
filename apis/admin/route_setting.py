@@ -9,10 +9,11 @@ from apis.v1.route_login import get_admin_user
 from schemas.base_response import GenericResponse
 from sqlalchemy import delete, delete, select
 from db.repository.app_setting import update_setting
+from schemas.app_setting import SettingResponse
 
 router = APIRouter(prefix="/api/admin/setting", dependencies=[Depends(get_admin_user)])
 
-@router.get("")
+@router.get("",response_model=GenericResponse[list[SettingResponse]])
 def index(db:Session=Depends(get_db)):
     datas = db.scalars(select(AppSetting)).all()
     return {"code":1, "data":datas}

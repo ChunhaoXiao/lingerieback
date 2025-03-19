@@ -4,6 +4,7 @@ from sqlalchemy import select,update
 from db.redis import set_config,get_config
 from core.app_setting import settings
 from sqlalchemy.orm import Session
+import json
 
 # def get_all_setting():
 #     pass
@@ -14,19 +15,26 @@ def set_app_config():
     for setting_key, setting in settings.items():
         row = session.scalars(select(AppSetting).where(AppSetting.setting_name == setting_key)).first()
         if not row:
+            options = ""
+            if "options" in setting:
+                options = json.dumps(setting['options'])
             data = AppSetting(
                 setting_name=setting_key, 
                 setting_value=setting["value"],
                 description=setting['description'],
-                type=setting['type']
-                )
+
+                type=setting['type'],
+                options = options
+            )
             session.add(data)
             session.commit()
         else:
             row.setting_name=setting_key
             #row.setting_value = setting["value"]
             row.description = setting['description']
-            row.type = setting['type']
+            row.type = setting['type']   
+            if "options" in setting:
+                row.options = json.dumps(setting['options'])
             session.commit()
             
             

@@ -9,11 +9,24 @@ settings = {
         "description":"首页推荐显示数量",
         "type":"input"
     },
+    
     "index_recommand_num":{
         "value":"10",
         "description":"首页热门数量",
         "type":"input"
     },
+    
+    "index_recommand_order":{
+        "options":[
+            {"label":"按点赞数量排序","value":"like_cnt"},
+            {"label":"随机获取","value":"random"}
+        ],
+        "value":"like_cnt",
+        "description":"首页热门排序",
+        "type":"radio"
+        
+    },
+    
     "feed_back_status": {
         "value":"1",
         "description":"开启意见反馈",
