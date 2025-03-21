@@ -17,7 +17,7 @@ database = Setting.DB_NAME
 #database= "lingerie"
 #database = "lingerielocal"
 
-
+sql_url = f"mysql+pymysql://{user}:{password}@{host}:3306/{database}?charset=utf8mb4"
 engine = create_engine(f"mysql+pymysql://{user}:{password}@{host}:3306/{database}?charset=utf8mb4")
 session = Session(engine)
 #cates = session.scalars(select(Category)).all()
