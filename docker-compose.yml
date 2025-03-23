@@ -11,7 +11,7 @@ services:
     volumes:
       - ${STATIC_PATH_MAP} #/home/staticbackup:/code/app/static
       #- C:\Users\kerby\Desktop\lingerie\files:/code/app/static
-
+    command:  bash -c "alembic upgrade head"
   db:
     #env_file: path_to_env.env.
     image: "mysql:8.0.31"
