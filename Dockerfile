@@ -17,5 +17,5 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 
 COPY . /code/app
-RUN ssh ... alembic upgrade head
+
 CMD ["fastapi", "run", "app/main.py", "--port", "8017"]
