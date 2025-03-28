@@ -15,7 +15,8 @@ RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-
+RUN echo "hello there=====>"
 COPY . /code/app
 
-CMD ["fastapi", "run", "app/main.py", "--port", "8017"]
+
+#CMD ["fastapi", "run", "app/main.py", "--port", "8017"]

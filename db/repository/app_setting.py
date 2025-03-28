@@ -11,7 +11,7 @@ import json
 #   #return session.scalars(select(AppSetting)).all()
 
 def set_app_config():
-    
+    print("===========================================================>>>>>>")
     for setting_key, setting in settings.items():
         row = session.scalars(select(AppSetting).where(AppSetting.setting_name == setting_key)).first()
         if not row:
@@ -41,6 +41,7 @@ def set_app_config():
     configs = session.scalars(select(AppSetting)).all()
     
     for item in configs:
+        print(f"item is============================================>:{item.options}")
         set_config(item.setting_name,item.setting_value)
         
 def update_setting(data, db:Session):

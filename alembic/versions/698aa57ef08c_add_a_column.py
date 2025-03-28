@@ -1,8 +1,8 @@
-"""Add column to app_setting
+"""Add a column
 
-Revision ID: d1a79ffd5073
-Revises: e5ff8acd90c5
-Create Date: 2025-03-20 23:31:46.731350
+Revision ID: 698aa57ef08c
+Revises: 
+Create Date: 2025-03-27 20:46:10.911165
 
 """
 from typing import Sequence, Union
@@ -12,15 +12,16 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'd1a79ffd5073'
-down_revision: Union[str, None] = 'e5ff8acd90c5'
+revision: str = '698aa57ef08c'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
     """Upgrade schema."""
-    op.add_column('app_setting', sa.Column('options', sa.String(50), nullable=True))
+    op.add_column('app_setting', sa.Column('options', sa.String(500),nullable=True))
+    
 
 
 def downgrade() -> None:

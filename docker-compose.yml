@@ -11,7 +11,10 @@ services:
     volumes:
       - ${STATIC_PATH_MAP} #/home/staticbackup:/code/app/static
       #- C:\Users\kerby\Desktop\lingerie\files:/code/app/static
-    command:  bash -c "alembic upgrade head"
+    #command: "sh -c /code/app/alembic.ini 'alembic upgrade head'"
+    #command: bash -c "alembic -c alembic.ini upgrade head && uvicorn main:app --host 0.0.0.0 --port 8017 --reload"
+    #command: bash -c "pwd && fastapi run app/main.py --port 8017"
+    command: bash -c "cd app && alembic upgrade head && fastapi run main.py --port 8017"
   db:
     #env_file: path_to_env.env.
     image: "mysql:8.0.31"
